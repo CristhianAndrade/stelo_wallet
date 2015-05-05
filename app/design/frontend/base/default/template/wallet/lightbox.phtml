@@ -1,0 +1,31 @@
+<?php
+
+$walletUrl = Mage::getModel('wallet/api')->getWalletUrl();
+
+
+if(!empty($walletUrl)){
+?>
+
+<div id="wallet" style="display: none"></div>
+
+
+
+<script>
+
+    LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() {
+
+        LightBoxStelo._chamaLightboxPorFuncao("<?php echo $walletUrl ; ?>", true);
+
+    });
+
+</script>
+
+
+
+<?php 
+Mage::getSingleton('core/session')->unsWalletUrl();
+}
+
+$walletUrl = Mage::getModel('wallet/api')->getWalletUrl();
+
+?>
