@@ -2,6 +2,6 @@
 Modulo de pagamento stelo
 
 
-Vers„o 1.2.3
+Vers√£o 1.2.4
 =======
 
