@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Stelo_Wallet>
-            <version>1.2.3</version>
+            <version>1.2.4</version>
         </Stelo_Wallet>
     </modules>
     <frontend>
