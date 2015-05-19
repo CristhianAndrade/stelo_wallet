@@ -1,6 +1,6 @@
 <?php
 $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,3 +10,31 @@ $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
     <strong>Carteira Stelo</strong>
 </p>
  <img src="<?php echo $baseUrl; ?>frontend/base/default/wallet/images/stelo_logo.png">
+
+<?php
+
+  $_orderid = Mage::app()->getRequest()->getParam('order_id');
+  $_isLogin = ($this->helper('customer')->isLoggedIn())? 1 : 0;
+
+  if($_orderid && $_isLogin):
+
+    $_order = Mage::getModel('sales/order')->load($_orderid);
+    $wallet = Mage::getModel('wallet/walletcustom')->load($_order->getIncrementId(), 'mage_id' );
+
+?>
+
+  <?php if($wallet->getStelo_url() && $wallet->getStatus() != 'canceled'): ?> 
+
+    <a style="display: inline-block;float: right;margin-top: 20px;" href="javascript:void(0)" urlstelo="<?php echo $wallet->getStelo_url(); ?>" lightbox="true" class="openLightbox">
+      <img width="150" alt="Logar com Stelo" src="<?php echo $this->getSkinUrl('wallet/images/pagueStelo.png') ?>" />
+    </a>
+
+    <script type="text/javascript">
+
+      LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() { });
+
+    </script>
+
+  <?php endif; ?>
+
+<?php endif; ?>

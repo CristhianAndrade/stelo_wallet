@@ -2,6 +2,6 @@
 Modulo de pagamento stelo
 
 
-Versão 1.2.4
+Versão 1.2.5
 =======
 

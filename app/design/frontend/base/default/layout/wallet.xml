@@ -28,5 +28,12 @@
       </reference>
 
     </wallet_onepage_success>
+	
+	<sales_order_view>
+		<reference name="head">
+			<action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action>
+			<action method="addJs"><script>wallet/wallet.js</script></action>
+		</reference>
+	</sales_order_view>
 
 </layout>
