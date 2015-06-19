@@ -1,0 +1,26 @@
+<?php
+
+  $url = $this->getUrlStelo();
+ if(Mage::getStoreConfig("payment/sso/active")){
+     
+
+?>
+<script type="text/javascript">
+
+  LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() { });
+
+  var html = '<a href="javascript:void(0)" urlstelo="<?php echo $url ?>" lightbox="true" class="openLightbox">';
+      html += '<img width="130" style="float:right" alt="Logar com Stelo" src="<?php echo $this->getSkinUrl('wallet/images/logar_stelo_1.png') ?>" />';
+      html += '</a>';
+
+
+
+var field = $$('.col-2 .buttons-set')[0];
+    if (field == undefined){
+        field = $$('.form-list')[0];
+    }
+    field.insert(html);
+
+</script>
+<?php  } ?>
+

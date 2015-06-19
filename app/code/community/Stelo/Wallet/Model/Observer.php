@@ -28,7 +28,7 @@ class Stelo_Wallet_Model_Observer extends Varien_Object {
                 "customerData" => $customerData
             );
 
-            $url = $url =  Mage::helper('wallet')->getUrl();
+            $url = Mage::helper('wallet')->getUrl();
             $url .= "/wallet/transactions";
 
             $body = json_encode($jsonStrutcture);

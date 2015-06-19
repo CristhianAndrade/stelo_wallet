@@ -35,6 +35,78 @@
 			<action method="addJs"><script>wallet/wallet.js</script></action>
 		</reference>
     </sales_order_view>
+   
+    
+   <customer_account_login translate="label">
+        <reference name="head">
+            <action method="addItem">
+                <type>external_js</type>
+                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
+                <params/>
+            </action>
+            <action method="addJs">
+                <script>wallet/wallet.js</script>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="wallet/customer_login" name="customer_form_login_stelo" template="wallet/customer/login.phtml" />
+        </reference>
+    </customer_account_login>
+    
+    
+    <checkout_onepage_index translate="label">
+        <reference name="head">
+            <action method="addItem">
+                <type>external_js</type>
+                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
+                <params/>
+            </action>
+            <action method="addJs">
+                <script>wallet/wallet.js</script>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="wallet/customer_login" name="customer_form_login_stelo" template="wallet/customer/checkouts/login_onepage.phtml" />
+        </reference>
+    </checkout_onepage_index>
+    
+    <idecheckoutvm_index_index translate="label">
+        <reference name="head">
+            <action method="addItem">
+                <type>external_js</type>
+                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
+                <params/>
+            </action>
+            <action method="addJs">
+                <script>wallet/wallet.js</script>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="wallet/customer_login" name="customer_form_login_stelo" template="wallet/customer/checkouts/login_idecheckout.phtml" />
+        </reference>
+    </idecheckoutvm_index_index>
+    
+    
+    <idecheckoutvm_index translate="label">
+        <reference name="head">
+            <action method="addItem">
+                <type>external_js</type>
+                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
+                <params/>
+            </action>
+            <action method="addJs">
+                <script>wallet/wallet.js</script>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="wallet/customer_login" name="customer_form_login_stelo" template="wallet/customer/checkouts/login_idecheckout.phtml" />
+        </reference>
+    </idecheckoutvm_index>
+    
     
     
 

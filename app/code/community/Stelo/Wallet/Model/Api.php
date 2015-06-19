@@ -33,15 +33,14 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
         return $result;
     }
     
-     public function SendSSO($url, $header, $body, $method) {
+ public function SendSSO($url, $header, $body) {
 
-       
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        if ($method == "CURLOPT_POST")
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        if($body)
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);  //linha para ser enviada quando for method Post, mas acho que só usará a classe para metodo POST então não coloquei if
+        //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $result = curl_exec($ch);
         curl_close($ch);
@@ -161,7 +160,7 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
             $returnRequest = $this->SendTemplate($url, $header, $body, "CURLOPT_GET");
             $returnRequest = json_decode($returnRequest);
 
-			if (property_exists($returnRequest, "steloStatus")) {
+            if (property_exists($returnRequest, "steloStatus")) {
                 $statusCode = $returnRequest->steloStatus->statusCode;
                 if (property_exists($returnRequest, "installment")) {
                     $installment = $returnRequest->installment;
