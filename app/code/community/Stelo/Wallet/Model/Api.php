@@ -161,13 +161,15 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
             $returnRequest = $this->SendTemplate($url, $header, $body, "CURLOPT_GET");
             $returnRequest = json_decode($returnRequest);
 
-            if (property_exists($returnRequest, "steloStatus")) {
+			if (property_exists($returnRequest, "steloStatus")) {
                 $statusCode = $returnRequest->steloStatus->statusCode;
                 if (property_exists($returnRequest, "installment")) {
                     $installment = $returnRequest->installment;
                 } else {
-                    $installment = 0;
-                    $statusCode = "S";
+                      if ($statusCode != "N") {
+                        $installment = 0;
+                        $statusCode = "S";
+                    }
                 }
             } else {
                 $statusCode = "N";
