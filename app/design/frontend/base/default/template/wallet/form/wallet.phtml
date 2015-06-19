@@ -1,8 +1,96 @@
-<?php $_code=$this->getMethodCode();
-      $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
+<?php
+$_code = $this->getMethodCode();
+$baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
 ?>
-<ul style="display:none" id="payment_form_wallet" class="form-list">
-    <li>
-        <img src="<?php echo $baseUrl; ?>frontend/base/default/wallet/images/stelo_logo.png">
-    </li>
-</ul>
+
+
+<div>
+    <ul style="display:none" id="payment_form_wallet" class="form-list">
+
+
+        <img style="float:left; margin:0 0 10px 20px;" src="<?php echo $baseUrl; ?>frontend/base/default/wallet/images/stelo_logo.png">
+
+
+        <li align= "center" style="color: #673FAD">
+            <p> <span id="textShow" style="display:block"><b>Olá, você já possui cadastro na Stelo?</b></span></p>
+            <p><img width="70px" id="stelo_sim" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'frontend/base/default/wallet/images/simButton.png'; ?>">
+                <img width="70px" id="stelo_nao" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'frontend/base/default/wallet/images/naoButton.png'; ?>">
+                <span id="textStelo" style="display:none; color: #FF0000 !important"><b>Por favor, selecione outra forma de pagamento.</b></span>
+                <span id="textTks" style="display:none"><b>Obrigado por utilizar Stelo!</b></span>
+                 <input type="hidden" id="stelo_question" name="stelo_question" value="" class="required-entry">
+            </p>
+
+        </li>
+       
+
+    </ul>
+</div>
+
+<script>
+    
+  
+
+    
+function showTks() {
+    
+        option = document.getElementById("stelo_sim");
+        option.style.display = "none";
+        option2 = document.getElementById("stelo_nao");
+        option2.style.display = "none";
+       textShow = document.getElementById("textShow");
+        textShow.style.display = "none";
+        textTks = document.getElementById("textTks");
+        textTks.style.display = "block";
+    }
+
+    
+
+   
+     function hideOption() {
+        option = document.getElementById("stelo_sim");
+        option.style.display = "none";
+        option2 = document.getElementById("stelo_nao");
+        option2.style.display = "none";
+        textStelo = document.getElementById("textStelo");
+        textStelo.style.display = "block";
+        textShow = document.getElementById("textShow");
+        textShow.style.display = "none";
+        
+    }
+
+    function blockPayButton() {
+        payButton = document.getElementsByClassName("button")[4];
+        payButton.style.display = "block";
+    }
+    
+
+
+    t = document.getElementById("p_method_wallet");
+    t.onclick = function () {
+       
+        payment.switchMethod('wallet')
+    };
+   
+    
+    j = document.getElementById("stelo_sim");
+    j.onclick = function () {
+        showTks();
+        inp = document.getElementById("stelo_question");
+        inp.value = "1";
+       
+        
+        
+   };
+    
+   n = document.getElementById("stelo_nao");
+       n.onclick = function () {
+       
+       hideOption();
+      
+   };
+
+
+
+
+
+</script>

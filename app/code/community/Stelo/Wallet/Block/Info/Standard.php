@@ -19,7 +19,20 @@ class Stelo_Wallet_Block_Info_Standard extends Mage_Payment_Block_Info
     {
         parent::_construct();
         
+        
+        //   Mage::log($orderRealId, null, "ordemState.log",true);
         $this->setTemplate('wallet/info/standard.phtml');
-               
+    }
+    
+    public function getInstallment($order){
+        
+        $_order = $order;
+        $incrementid = $_order->getData('increment_id');
+        
+        $steloData = Mage::getModel("wallet/api")->checkInstallment($incrementid);
+        
+        
+        return $steloData;
+        
     }
 }

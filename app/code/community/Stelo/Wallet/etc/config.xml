@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Stelo_Wallet>
-            <version>1.2.5</version>
+            <version>1.2.6</version>
         </Stelo_Wallet>
     </modules>
     <frontend>
@@ -126,7 +126,8 @@
                 <order_status>pending</order_status>
                 <maxInstallment>1</maxInstallment>
                 <title>Carteira Stelo</title>
-                <apiEnd>http://200.142.203.223/</apiEnd>
+                <urlNotificacao>http://www.sualoja.com.br/wallet/index/listener</urlNotificacao>
+               
                 <apiVer>V1</apiVer>
             </wallet>
          </payment>

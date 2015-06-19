@@ -87,7 +87,7 @@ class Stelo_Wallet_Model_Wallet extends Mage_Payment_Model_Method_Abstract {
     //Captura dados da ordem
     public function getOrderData() {
 
-        $orderData['orderId'] = Mage::getModel("sales/order")->getCollection()->getLastItem()->getIncrementId();
+        $orderData = array();
         $orderData['plataformId'] = "1";
         $orderData['transactionType'] = "w";
         $orderData['shippingBehavior'] = "default";
@@ -103,6 +103,7 @@ class Stelo_Wallet_Model_Wallet extends Mage_Payment_Model_Method_Abstract {
 
         if (isset($totals['discount']) && $totals['discount']->getValue()) {
             $discount = Mage::helper('core')->currency($totals['discount']->getValue()); //Discount value if applied
+            $discount = number_format($discount, 2, '.', '');
         } else {
             $discount = '';
         }
@@ -114,10 +115,10 @@ class Stelo_Wallet_Model_Wallet extends Mage_Payment_Model_Method_Abstract {
         }
         $quote = $order->getQuote();
         $paymentData["amount"] =  number_format($grandTotal, 2, '.', '');
-        $paymentData["discountAmount"] =  number_format($discount, 2, '.', '');
+        $paymentData["discountAmount"] = $discount;
         $paymentData["freight"] =  number_format($quote->getShippingAddress()->getShippingAmount(), 2, '.', '');
         $paymentData["currency"] = "BRL";
-        $paymentData["maxInstallment"] = Mage::getStoreConfig('payment/wallet/maxInstallment');
+//        $paymentData["maxInstallment"] = Mage::getStoreConfig('payment/wallet/maxInstallment');
 
        
         $cartItems = $quote->getAllVisibleItems();

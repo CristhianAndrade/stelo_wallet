@@ -16,6 +16,17 @@ $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
 $walletUrl = Mage::getModel('wallet/api')->getWalletUrl();
 ?>
 
+<script>
+
+    LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() {
+
+        LightBoxStelo._chamaLightboxPorFuncao("<?php echo $walletUrl ; ?>", true);
+
+    });
+
+</script>
+
+
 <div class="page-title">
     <h1><?php echo $this->__('Your order has been received.') ?></h1>
 </div>

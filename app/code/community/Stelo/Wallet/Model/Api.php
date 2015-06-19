@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  * Stelo Payment module
  * Developed By Rodrigo Ribeiro  
  * https://br.linkedin.com/in/rodrigoferreirasantosribeiro
@@ -16,10 +17,10 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        if($method == "CURLOPT_CUSTOMREQUEST"){
-           curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        }else{
-        curl_setopt($ch, $method, 1);
+        if ($method == "CURLOPT_CUSTOMREQUEST") {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        } else {
+            //  curl_setopt($ch, $method, 1);
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         if ($method == "CURLOPT_POST")
@@ -27,7 +28,23 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $result = curl_exec($ch);
-        curl_close($ch);  
+        curl_close($ch);
+
+        return $result;
+    }
+    
+     public function SendSSO($url, $header, $body, $method) {
+
+       
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        if ($method == "CURLOPT_POST")
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        $result = curl_exec($ch);
+        curl_close($ch);
 
         return $result;
     }
@@ -43,8 +60,8 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
 
     public function cancelOrder($orderId) {
 
-        
-        
+
+
         $collection = Mage::getModel('wallet/walletcustom')->getCollection();
         $collection->addFieldToSelect('id');
         $collection->addFieldToSelect('mage_id');
@@ -65,28 +82,43 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
             $idTableStelo = $item->getData("id");
             $steloId = $item->getData('stelo_id');
             $mageId = $item->getData('mage_id');
-            
-             
 
-             
-            $url =  Mage::getStoreConfig('payment/wallet/apiEnd');
-            $url .= "ec/";
-            $url .= Mage::getStoreConfig('payment/wallet/apiVer');
-            $url .= "/orders/transactions/" . $steloId;
-            
+
+          
+                $url = $url =  Mage::helper('wallet')->getUrl();
+                $url .= "/orders/transactions/" . $steloId;
+          
+       
 
             $returnRequest = $this->SendTemplate($url, $header, $body, "CURLOPT_CUSTOMREQUEST");
             //Mage::log($returnRequest, null, "cancel.log", true);
             $returnRequest = json_decode($returnRequest);
-                
         }
-        
+
         return $returnRequest;
     }
 
+    public function checkInstallment($mageId) {
+        $collection = Mage::getModel('wallet/walletcustom')->getCollection();
+        $collection->addFieldToSelect('stelo_id');
+        $collection->addFieldToSelect('stelo_url');
+        $collection->addFieldToSelect('installment');
+        $collection->addFieldToFilter('mage_id', array('like' => $mageId));
+
+
+        foreach ($collection as $item) {
+
+            $stelo["id"] = $item->getData('stelo_id');
+            $stelo["installment"] = $item->getData('installment');
+            $stelo["url"] = $item->getData('stelo_url');
+        }
+
+        return $stelo;
+    }
+
     public function checkStatus($steloId) {
-        
-        if($steloId == ""){
+
+        if ($steloId == "") {
             $collection = Mage::getModel('wallet/walletcustom')->getCollection();
             $collection->addFieldToSelect('id');
             $collection->addFieldToSelect('mage_id');
@@ -94,21 +126,18 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
             $collection->addFieldToSelect('status');
             $collection->addFieldToFilter('status', array('nlike' => 'processing'));
             $collection->addFieldToFilter('status', array('nlike' => 'canceled'));
-        }else{
+        } else {
             $collection = Mage::getModel('wallet/walletcustom')->getCollection();
             $collection->addFieldToSelect('id');
             $collection->addFieldToSelect('mage_id');
             $collection->addFieldToSelect('stelo_id');
             $collection->addFieldToSelect('status');
             $collection->addFieldToFilter('stelo_id', array('like' => $steloId));
+
+          
             
-            if(empty($collection)){
-                echo '{"message" :"id não encontrado" }';
-                return;
-            }
-                
         }
-        
+
         $clientId = Mage::getStoreConfig('payment/wallet/clientId');
         $clientSecret = Mage::getStoreConfig('payment/wallet/clientSecret');
         $auth = base64_encode($clientId . ":" . $clientSecret);
@@ -126,37 +155,43 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
             $mageId = $item->getData('mage_id');
             $stateAct = $item->getData('status');
 
-            $url =  Mage::getStoreConfig('payment/wallet/apiEnd');
-            $url .= "ec/";
-            $url .= Mage::getStoreConfig('payment/wallet/apiVer');
+            $url =  Mage::helper('wallet/data')->getUrl();
             $url .= "/orders/transactions/" . $steloId;
-           
 
-            
             $returnRequest = $this->SendTemplate($url, $header, $body, "CURLOPT_GET");
-           
-
             $returnRequest = json_decode($returnRequest);
-            if(property_exists($returnRequest, "steloStatus")){
+
+            if (property_exists($returnRequest, "steloStatus")) {
                 $statusCode = $returnRequest->steloStatus->statusCode;
-            }else{
+                if (property_exists($returnRequest, "installment")) {
+                    $installment = $returnRequest->installment;
+                } else {
+                    $installment = 0;
+                    $statusCode = "S";
+                }
+            } else {
                 $statusCode = "N";
+                $installment = 100;
             }
+
+
+
+            $this->changeStatus($mageId, $statusCode, $idTableStelo, $stateAct, $installment);
             
-
-
-            $this->changeStatus($mageId, $statusCode, $idTableStelo, $stateAct);
+            $msg = '{"message" :"Alteração de Status realizada com sucesso" }';
+            return $msg;
+            
         }
     }
 
-    public function changeStatus($mageId, $steloStatus, $idTableStelo, $stateAct) {
+    public function changeStatus($mageId, $steloStatus, $idTableStelo, $stateAct, $installment) {
 
         switch ($steloStatus) {
             case "I":
                 $status = "pending";
                 break;
             case "E":
-                $status = "pending_payment";
+                $status = "payment_review";
                 break;
             case "A":
                 $status = "processing";
@@ -171,7 +206,7 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
                 $status = "canceled";
                 break;
             case "S":
-                $status = "payment_review";
+                $status = "pending_payment";
                 break;
             case "SP":
                 $status = "payment_review";
@@ -182,25 +217,25 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
 
 
         $order = Mage::getModel('sales/order')->loadByIncrementId($mageId);
-            
-       if($status != $stateAct){
-  
-        $order->setState($status, true);
-        $order->setStatus($status, true)->save();
 
-        $steloOrder = Mage::getModel('wallet/walletcustom');
-        $steloOrder = $steloOrder->load($idTableStelo);
-        $steloOrder->setData("status", $status)->save();
-       }
+        if ($status != $stateAct) {
+
+            $order->setState($status, true);
+            $order->setStatus($status, true)->save();
+
+            $steloOrder = Mage::getModel('wallet/walletcustom');
+            $steloOrder = $steloOrder->load($idTableStelo);
+            $steloOrder->setData("status", $status)->save();
+            $steloOrder->setData("installment", $installment)->save();
+        }
     }
-    
-     public function getWalletUrl(){
+
+    public function getWalletUrl() {
 
         $urlPortal = Mage::getSingleton('core/session')->getWalletUrl();
-       
-        
+
+
         return $urlPortal;
     }
-
 
 }

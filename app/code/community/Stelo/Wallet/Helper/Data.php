@@ -72,6 +72,22 @@ class Stelo_Wallet_Helper_Data extends Mage_Core_Helper_Abstract
       }
        
     }
+    
+    
+    public function getUrl(){
+        
+          if(Mage::getStoreConfig('payment/wallet/ambiente')){
+                $url = "http://api.stelo.com.br/";
+                $url .= "ec/";
+                $url .= "V1";
+                return $url;
+            }else{
+                $url = "http://200.142.203.223/";
+                $url .= "ec/";
+                $url .= "V1";
+                return $url;
+            }
+    }
 
 
 }

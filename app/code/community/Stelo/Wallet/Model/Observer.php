@@ -12,14 +12,14 @@
 class Stelo_Wallet_Model_Observer extends Varien_Object {
 
     public function sendWallet($observer) {
+    /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getEvent()->getOrder();
 
-        if ($observer->getEvent()->getOrder()->getPayment()->getMethodInstance()->getCode() == 'wallet') {
-
-
-            $order = Mage::getSingleton('checkout/session');
+        if ($order->getPayment()->getMethodInstance()->getCode() == 'wallet') {
             $wallet = Mage::getModel('wallet/wallet');
             $customerData = $wallet->getCustomerData($order);
             $orderData = $wallet->getOrderData();
+            $orderData['orderId'] = $order->getIncrementId();
             $paymentData = $wallet->getPaymentData($order);
 
             $jsonStrutcture = array(
@@ -28,14 +28,12 @@ class Stelo_Wallet_Model_Observer extends Varien_Object {
                 "customerData" => $customerData
             );
 
-            $url = Mage::getStoreConfig('payment/wallet/apiEnd');
-            $url .= "ec/";
-            $url .= Mage::getStoreConfig('payment/wallet/apiVer');
+            $url = $url =  Mage::helper('wallet')->getUrl();
             $url .= "/wallet/transactions";
 
             $body = json_encode($jsonStrutcture);
-           
-          
+            Mage::log($url, null, "url.log", true);
+			
             $clientId = Mage::getStoreConfig('payment/wallet/clientId');
             $clientSecret = Mage::getStoreConfig('payment/wallet/clientSecret');
             $auth = base64_encode($clientId . ":" . $clientSecret);
@@ -44,22 +42,17 @@ class Stelo_Wallet_Model_Observer extends Varien_Object {
                 "Authorization: " . $auth,
                 "Content-Type: application/json"
             );
-           
 
-
-            $returnRequest = Mage::getModel("wallet/api")->SendTemplate($url, $header, $body, "CURLOPT_POST");
-
-            $returnRequest = json_decode($returnRequest);
             
+            $returnRequest = Mage::getModel("wallet/api")->SendTemplate($url, $header, $body, "CURLOPT_POST");
+            Mage::log($returnRequest, null, "return.log", true);
+            $returnRequest = json_decode($returnRequest);
             $hrefUrl = "@href";
-
             $urlWallet = $returnRequest->link[2]->$hrefUrl;
-
             $steloId = sprintf('%.0f', $returnRequest->orderData->orderId);
-
             Mage::getModel('wallet/api')->createNewSteloOrder($orderData['orderId'], $steloId, "new", $urlWallet);
-
             Mage::getSingleton('core/session')->setWalletUrl($urlWallet);
+            Mage::getModel('wallet/api')->checkStatus($steloId);
         
         }
     }

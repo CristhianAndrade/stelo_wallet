@@ -21,16 +21,22 @@ class Stelo_Wallet_IndexController extends Mage_Core_Controller_Front_Action{
 
         
         $var = $GLOBALS['HTTP_RAW_POST_DATA'];
+        Mage::log($var, null, "varPost.log", true);
         if(!empty($var)){
         $var = json_decode($var);
         
         $steloId = $var->steloId;
-        
-        Mage::getModel('wallet/api')->checkStatus($steloId);
-    
+       
+        $msg = Mage::getModel('wallet/api')->checkStatus($steloId);
+        echo $msg;
         }
         
     }
+     public function sso()
+    {
+      
+    }
+
 
 
 }
