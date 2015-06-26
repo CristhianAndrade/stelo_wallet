@@ -18,11 +18,14 @@ $walletUrl = Mage::getModel('wallet/api')->getWalletUrl();
 
 <script>
 
-    LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() {
+    /*LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() {
 
         LightBoxStelo._chamaLightboxPorFuncao("<?php echo $walletUrl ; ?>", true);
 
-    });
+    });*/
+    
+    jQuery.featherlight( jQuery('<iframe width="950" height="650" src="<?php echo $walletUrl."&indLightbox=true";  ?>"/>') );
+
 
 </script>
 
@@ -65,10 +68,18 @@ $walletUrl = Mage::getModel('wallet/api')->getWalletUrl();
 <p>
     <b> Caso a tela de pagamento da Stelo não tenha sido aberta, por favor clique no botão abaixo</b> </p>
 <p>
-<a href="javascript:void(0)" urlStelo="<?php echo $walletUrl; ?>" lightbox="true" class="openLightbox">
+<a href="<?php echo $walletUrl.'&indLightbox=true'; ?>" id="light-wallet"  lightbox="true" class="openLightbox">
     <img src="<?php echo $baseUrl; ?>frontend/base/default/wallet/images/pagueStelo.png"></a>
 </p>
 
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
 </div>
+
+<script type="text/javascript">
+  jQuery('#light-wallet').click(function(){
+    jQuery.featherlight( jQuery('<iframe width="950" height="650" src="' + jQuery(this).attr('href') + '"/>') )
+    return false;
+  })
+</script>
+

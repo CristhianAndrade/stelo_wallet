@@ -179,11 +179,13 @@ class Stelo_Wallet_Model_Api extends Varien_Object {
 
 
             $this->changeStatus($mageId, $statusCode, $idTableStelo, $stateAct, $installment);
-            
-            $msg = '{"message" :"Alteração de Status realizada com sucesso" }';
-            return $msg;
+
             
         }
+
+                    
+            $msg = '{"message" :"Alteração de Status realizada com sucesso" }';
+            return $msg;
     }
 
     public function changeStatus($mageId, $steloStatus, $idTableStelo, $stateAct, $installment) {

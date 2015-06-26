@@ -13,14 +13,16 @@
       <label>Stelo Checkout Success</label>
 
       <reference name="head">
-           <action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action>
-          <action method="addJs"><script>wallet/wallet.js</script></action>
+          <!--action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action-->
+          <action method="addJs"  ifconfig="payment/wallet/active_jquery" ><script>wallet/jquery.js</script></action>
+          <action method="addItem"><type>skin_js</type><name>wallet/js/featherlight.min.js</name><params/></action>
+          <action method="addItem"><type>skin_css</type><name>wallet/css/featherlight.min.css</name><params/></action>
       </reference>
 
       <reference name="root">
           <action method="setTemplate"><template>page/1column.phtml</template></action>
       </reference>
-
+ 
       <reference name="content">
           <block type="checkout/onepage_success" name="checkout.success" template="wallet/checkout/success.phtml">
             <block type="wallet/lightbox" name="lightbox" template="wallet/lightbox.phtml"/>
@@ -30,13 +32,12 @@
     </wallet_onepage_success>
     
     <sales_order_view>
-		<reference name="head">
-			<action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action>
-			<action method="addJs"><script>wallet/wallet.js</script></action>
-		</reference>
-    </sales_order_view>
-    
-    
-
+      <reference name="head">
+          <!--action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action-->
+          <action method="addJs"  ifconfig="payment/wallet/active_jquery" ><script>wallet/jquery.js</script></action>
+          <action method="addItem"><type>skin_css</type><name>wallet/css/featherlight.min.css</name><params/></action>
+          <action method="addItem"><type>skin_js</type><name>wallet/js/featherlight.min.js</name><params/></action>
+      </reference>
+    </sales_order_view>  
 
 </layout>
