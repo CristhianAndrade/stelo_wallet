@@ -7,16 +7,18 @@
 
 <script type="text/javascript">
 
-  LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() { });
-
-  var html = '<p style="float:right"><a href="javascript:void(0)" urlstelo="<?php echo $url ?>" lightbox="true" class="openLightbox">';
+  var html = '<p style="float:right"><a href="<?php echo $url ?>" id="light-wallet" lightbox="true" class="openLightbox">';
       html += '<img width="130" alt="Logar com Stelo" src="<?php echo $this->getSkinUrl('wallet/images/logar_stelo_1.png') ?>" />';
       html += '</a></p>';
 
-
-
       $$('.idecheckoutvm-login-area')[0].insert(html);
+
+
+  jQuery('#light-wallet').click(function(){
+    jQuery.featherlight( jQuery('<iframe width="950" height="600" src="' + jQuery(this).attr('href') + '"/>') )
+    return false;
+  })
 
 </script>
 
- <?php } ?>
+ <?php } ?> 

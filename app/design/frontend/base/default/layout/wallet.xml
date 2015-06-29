@@ -13,8 +13,10 @@
       <label>Stelo Checkout Success</label>
 
       <reference name="head">
-           <action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action>
-          <action method="addJs"><script>wallet/wallet.js</script></action>
+          <!--action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action-->
+          <action method="addJs"  ifconfig="payment/wallet/active_jquery" ><script>wallet/jquery.js</script></action>
+          <action method="addItem"><type>skin_js</type><name>wallet/js/featherlight.min.js</name><params/></action>
+          <action method="addItem"><type>skin_css</type><name>wallet/css/featherlight.min.css</name><params/></action>
       </reference>
 
       <reference name="root">
@@ -31,22 +33,20 @@
     
     <sales_order_view>
 		<reference name="head">
-			<action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action>
-			<action method="addJs"><script>wallet/wallet.js</script></action>
-		</reference>
+          <!--action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action-->
+          <action method="addJs"  ifconfig="payment/wallet/active_jquery" ><script>wallet/jquery.js</script></action>
+          <action method="addItem"><type>skin_js</type><name>wallet/js/featherlight.min.js</name><params/></action>
+          <action method="addItem"><type>skin_css</type><name>wallet/css/featherlight.min.css</name><params/></action>
+        </reference>
     </sales_order_view>
    
     
    <customer_account_login translate="label">
         <reference name="head">
-            <action method="addItem">
-                <type>external_js</type>
-                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
-                <params/>
-            </action>
-            <action method="addJs">
-                <script>wallet/wallet.js</script>
-            </action>
+          <!--action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action-->
+          <action method="addJs"  ifconfig="payment/wallet/active_jquery" ><script>wallet/jquery.js</script></action>
+          <action method="addItem"><type>skin_js</type><name>wallet/js/featherlight.min.js</name><params/></action>
+          <action method="addItem"><type>skin_css</type><name>wallet/css/featherlight.min.css</name><params/></action>
         </reference>
 
         <reference name="content">
@@ -57,14 +57,10 @@
     
     <checkout_onepage_index translate="label">
         <reference name="head">
-            <action method="addItem">
-                <type>external_js</type>
-                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
-                <params/>
-            </action>
-            <action method="addJs">
-                <script>wallet/wallet.js</script>
-            </action>
+          <!--action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action-->
+          <action method="addJs"  ifconfig="payment/wallet/active_jquery" ><script>wallet/jquery.js</script></action>
+          <action method="addItem"><type>skin_js</type><name>wallet/js/featherlight.min.js</name><params/></action>
+          <action method="addItem"><type>skin_css</type><name>wallet/css/featherlight.min.css</name><params/></action>
         </reference>
 
         <reference name="content">
@@ -74,41 +70,16 @@
     
     <idecheckoutvm_index_index translate="label">
         <reference name="head">
-            <action method="addItem">
-                <type>external_js</type>
-                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
-                <params/>
-            </action>
-            <action method="addJs">
-                <script>wallet/wallet.js</script>
-            </action>
+          <!--action method="addItem"><type>external_js</type><name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name><params/></action-->
+          <action method="addJs"  ifconfig="payment/wallet/active_jquery" ><script>wallet/jquery.js</script></action>
+          <action method="addItem"><type>skin_js</type><name>wallet/js/featherlight.min.js</name><params/></action>
+          <action method="addItem"><type>skin_css</type><name>wallet/css/featherlight.min.css</name><params/></action>
         </reference>
 
         <reference name="content">
             <block type="wallet/customer_login" name="customer_form_login_stelo" template="wallet/customer/checkouts/login_idecheckout.phtml" />
         </reference>
     </idecheckoutvm_index_index>
-    
-    
-    <idecheckoutvm_index translate="label">
-        <reference name="head">
-            <action method="addItem">
-                <type>external_js</type>
-                <name>https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js</name>
-                <params/>
-            </action>
-            <action method="addJs">
-                <script>wallet/wallet.js</script>
-            </action>
-        </reference>
-
-        <reference name="content">
-            <block type="wallet/customer_login" name="customer_form_login_stelo" template="wallet/customer/checkouts/login_idecheckout.phtml" />
-        </reference>
-    </idecheckoutvm_index>
-    
-    
-    
 
 
 </layout>

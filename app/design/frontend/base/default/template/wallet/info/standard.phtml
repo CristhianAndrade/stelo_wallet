@@ -25,16 +25,17 @@ $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
 
     if($wallet->getStelo_url() && $wallet->getStatus() != 'canceled' && $wallet->getStatus() != 'processing'): ?> 
 
-    <a style="display: inline-block;float: right;margin-top: 20px;" href="javascript:void(0)" urlstelo="<?php echo $wallet->getStelo_url(); ?>" lightbox="true" class="openLightbox">
+    <a href="<?php echo $wallet->getStelo_url().'&indLightbox=true'; ?>" id="light-wallet" style="display: inline-block;float: right;margin-top: 20px;"  lightbox="true" class="openLightbox"> 
       <img width="150" alt="Logar com Stelo" src="<?php echo $this->getSkinUrl('wallet/images/pagueStelo.png') ?>" />
-    </a>
+    </a> 
 
-    <script type="text/javascript">
-
-      LoadScript("https://carteira.stelo.com.br/static/js/stelo-lightbox/stelo-lightbox-min.js", function() { });
-
-    </script>
-
-  <?php endif; ?>
+  <?php endif; ?> 
 
 <?php endif; ?>
+
+<script type="text/javascript">
+  jQuery('#light-wallet').click(function(){
+    jQuery.featherlight( jQuery('<iframe width="950" height="600" src="' + jQuery(this).attr('href') + '"/>') )
+    return false;
+  })
+</script>
