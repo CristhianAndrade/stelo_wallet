@@ -10,7 +10,9 @@ $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
 
         <img style="float:left; margin:0 0 10px 20px;" src="<?php echo $baseUrl; ?>frontend/base/default/wallet/images/stelo_logo.png">
 
-
+<?php $isStelo =  Mage::getModel('core/cookie')->get("is_stelo");
+    if(empty($isStelo)):
+?>
         <li align= "center" style="color: #673FAD">
             <p> <span id="textShow" style="display:block"><b>Olá, você já possui cadastro na Stelo?</b></span></p>
             <p><img width="70px" id="stelo_sim" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'frontend/base/default/wallet/images/simButton.png'; ?>">
@@ -21,7 +23,7 @@ $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
             </p>
 
         </li>
-       
+ <?php endif; ?>      
 
     </ul>
 </div>

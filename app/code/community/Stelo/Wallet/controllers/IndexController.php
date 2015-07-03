@@ -81,6 +81,8 @@ class Stelo_Wallet_IndexController extends Mage_Core_Controller_Front_Action {
       //  var_dump($steloCustomer);
         $this->_saveCustomerStelo($steloCustomer);
 
+       Mage::getModel('core/cookie')->set('is_stelo','validate stelo', 60*60*24*30);
+
        echo '<script>window.parent.location.reload();</script>';
     }
 

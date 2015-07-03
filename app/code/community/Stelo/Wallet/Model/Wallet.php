@@ -129,10 +129,10 @@ class Stelo_Wallet_Model_Wallet extends Mage_Payment_Model_Method_Abstract {
             $product = Mage::getModel('catalog/product')->load($productId)->getData();
 
 
-            $itemsData["productName"] = $product["name"];
-            $itemsData["productPrice"] =  number_format($product["price"], 2, '.', '');
+            $itemsData["productName"] = $item->getName();
+            $itemsData["productPrice"] =   Mage::helper('tax')->getPrice($item->getProduct(), $item->getProduct()->getFinalPrice(), true);
             $itemsData["productQuantity"] = $item->getQty();
-            $itemsData["productSku"] = substr(ereg_replace("[^a-zA-Z0-9_]", "", $product["sku"]), 0, 8);
+            $itemsData["productSku"] = substr(ereg_replace("[^a-zA-Z0-9_]", "", $item->getSku()), 0, 8);
 
             $itemsCollection[$cont] = $itemsData;
 
