@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Stelo_Wallet>
-            <version>1.3.1</version>
+            <version>1.3.4</version>
         </Stelo_Wallet>
     </modules>
     <frontend>
@@ -22,6 +22,17 @@
                 </wallet>
             </updates>
         </layout>
+        <events>
+            <payment_method_is_active>
+                <observers>
+                    <paymentfilter_payment_method_is_active>
+                        <type>singleton</type>
+                        <class>wallet/payment_observer</class>
+                        <method>methodIsAvailable</method>
+                    </paymentfilter_payment_method_is_active>
+                </observers>
+            </payment_method_is_active>
+        </events> 
     </frontend>
     <global>
         <sales>

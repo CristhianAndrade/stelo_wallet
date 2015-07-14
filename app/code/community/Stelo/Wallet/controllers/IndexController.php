@@ -81,9 +81,9 @@ class Stelo_Wallet_IndexController extends Mage_Core_Controller_Front_Action {
       //  var_dump($steloCustomer);
         $this->_saveCustomerStelo($steloCustomer);
 
-       Mage::getModel('core/cookie')->set('is_stelo','validate stelo', 60*60*24*30);
+        //Mage::getModel('core/cookie')->set('is_stelo','validate stelo', 60*60*24*30);
 
-       echo '<script>window.parent.location.reload();</script>';
+        echo '<script>window.parent.location.reload();</script>';
     }
 
     protected function _saveCustomerStelo($steloCustomer) {
@@ -135,20 +135,31 @@ class Stelo_Wallet_IndexController extends Mage_Core_Controller_Front_Action {
                     ->setDob($customer_dob);
             $customer->setTaxvat($customer_cpf);
             $customer->setCpfcnpj($customer_cpf);
+            $customer->setTipopessoa(1); 
             $customer->setCpf($customer_cpf);
             $customer->setRg($customer_rg);
 
 
-
-
-
             try {
+
+                //verificando grupo
+                $targetGroup = Mage::getModel('customer/group');
+                $targetGroup->load('Stelo', 'customer_group_code');
+
+                if($targetGroup->getId())
+                {
+                     $customer->setGroupId($targetGroup->getId());
+                }
+
                 //salvando cliente
                 $customer->save();
 
 
 
                 foreach ($steloCustomer->address as $address) {
+
+                    Mage::log($address, null, 'address.log', true);
+
                     $customer_address_street1 = $address->street;
 
                     $customer_address_street2 = $address->number;
@@ -156,7 +167,10 @@ class Stelo_Wallet_IndexController extends Mage_Core_Controller_Front_Action {
                     $customer_address_street4 = $address->neighborhood;
                     $customer_address_city = $address->city;
 
-                    $customer_address_state = $address->state;
+                    if($statecheck = $this->checkState($address->state))
+                         $customer_address_state_id = $statecheck;
+
+                    $customer_address_state = $address->state; 
                     $customer_address_zipcode = $address->zipCode;
 
                     $customer_address_country = "BR";
@@ -175,7 +189,7 @@ class Stelo_Wallet_IndexController extends Mage_Core_Controller_Front_Action {
                             '3' => $customer_address_street4
                         ),
                         'city' => $customer_address_city,
-                        'region_id' => '',
+                        'region_id' => $customer_address_state_id,
                         'region' => $customer_address_state,
                         'postcode' => $customer_address_zipcode,
                         'country_id' => 'BR', /* Croatia */
@@ -209,9 +223,64 @@ class Stelo_Wallet_IndexController extends Mage_Core_Controller_Front_Action {
                 $customer = Mage::getModel('customer/customer');
                 $customer->setWebsiteId(Mage::app()->getWebsite()->getId());
                 $customer->loadByEmail(trim($customer_email));
+
+                $targetGroup = Mage::getModel('customer/group');
+                $targetGroup->load('Stelo', 'customer_group_code');
+
+                if($targetGroup->getId())
+                {
+                    $customer->setGroupId($targetGroup->getId());
+                    $customer->save(); 
+                }
+
                 Mage::getSingleton('customer/session')->loginById($customer->getId());
             }
         }
+    }
+
+    protected function checkState($state)
+    {
+        switch ($state) {
+            case 'AC': $uf =  "Acre"; break;
+            case 'AL': $uf =  "Alagoas"; break;
+            case 'AP': $uf =  "Amapá"; break;
+            case 'AM': $uf =  "Amazonas"; break;
+            case 'BA': $uf =  "Bahia"; break;
+            case 'CE': $uf =  "Ceará"; break;
+            case 'DF': $uf =  "Distrito Federal"; break;
+            case 'ES': $uf =  "Espírito Santo"; break;
+            case 'GO': $uf =  "Goiás"; break;
+            case 'MA': $uf =  "Maranhão"; break;
+            case 'MT': $uf =  "Mato Grosso"; break;
+            case 'MS': $uf =  "Mato Grosso do Sul"; break;
+            case 'MG': $uf =  "Minas Gerais"; break;
+            case 'PA': $uf =  "Pará"; break;
+            case 'PB': $uf =  "Paraíba"; break;
+            case 'PR': $uf =  "Paraná"; break;
+            case 'PE': $uf =  "Pernambuco"; break;
+            case 'PI': $uf =  "Piauí"; break;
+            case 'RJ': $uf =  "Rio de Janeiro"; break;
+            case 'RN': $uf =  "Rio Grande do Norte"; break;
+            case 'RS': $uf =  "Rio Grande do Sul"; break;
+            case 'RO': $uf =  "Rondônia"; break;
+            case 'RR': $uf =  "Roraima"; break;
+            case 'SC': $uf =  "Santa Catarina"; break;
+            case 'SP': $uf =  "São Paulo"; break;
+            case 'SE': $uf =  "Sergipe"; break;
+            case 'TO': $uf =  "Tocantins"; break;
+
+        }
+
+        $regions = Mage::getModel('directory/country')->load('BR')->getRegions();
+        foreach($regions as $region)
+        {
+            if($uf == $region['name'] || $state == $region['name'])
+                return $region['region_id'];
+        }
+
+        return false;
+
+
     }
 
 }

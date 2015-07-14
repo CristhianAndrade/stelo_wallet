@@ -4,6 +4,7 @@
         <Stelo_Wallet>
             <active>true</active>
             <codePool>community</codePool>
+            <version>1.3.4</version>
         </Stelo_Wallet>
     </modules>
 </config> 

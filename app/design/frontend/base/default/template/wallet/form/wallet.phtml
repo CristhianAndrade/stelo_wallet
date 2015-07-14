@@ -3,15 +3,21 @@ $_code = $this->getMethodCode();
 $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
 ?>
 
-
 <div>
     <ul style="display:none" id="payment_form_wallet" class="form-list">
 
+        <li>
+            <img style="float:left; margin:0 0 10px 20px;" src="<?php echo $baseUrl; ?>frontend/base/default/wallet/images/stelo_logo.png">
+        </li>
+        
+<?php //$isStelo =  Mage::getModel('core/cookie')->get("is_stelo");
+    //if(empty($isStelo)){
+    
+    $targetGroup = Mage::getModel('customer/group');
+    if(Mage::getSingleton('customer/session')->isLoggedIn())
+        $targetGroup->load(Mage::getSingleton('customer/session')->getCustomerGroupId());
 
-        <img style="float:left; margin:0 0 10px 20px;" src="<?php echo $baseUrl; ?>frontend/base/default/wallet/images/stelo_logo.png">
-
-<?php $isStelo =  Mage::getModel('core/cookie')->get("is_stelo");
-    if(empty($isStelo)):
+    if($targetGroup->getData('customer_group_code') != 'Stelo'){ 
 ?>
         <li align= "center" style="color: #673FAD">
             <p> <span id="textShow" style="display:block"><b>Olá, você já possui cadastro na Stelo?</b></span></p>
@@ -21,9 +27,10 @@ $baseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
                 <span id="textTks" style="display:none"><b>Obrigado por utilizar Stelo!</b></span>
                  <input type="hidden" id="stelo_question" name="stelo_question" value="" class="required-entry">
             </p>
-
+ 
         </li>
- <?php endif; ?>      
+
+ <?php } ?>      
 
     </ul>
 </div>
